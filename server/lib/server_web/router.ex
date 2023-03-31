@@ -24,9 +24,21 @@ defmodule ServerWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ServerWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ServerWeb do
+    pipe_through :api
+
+    scope "/auth" do
+      get "/me", AuthController, :show
+      post "/login", AuthController, :create
+      # delete "/logout", AuthController, :delete
+    end
+
+    # scope "/users" do
+    #   get "/", UsersController, :index
+    #   get "/:id", UsersController, :show
+    #   post "/", UsersController, :create
+    # end
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:server, :dev_routes) do

@@ -1,23 +1,35 @@
-defmodule Server.User do
+defmodule Server.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  schema "users" do
+  @foreign_key_type :binary_id
+  schema "accounts" do
     field :email, :string
-    field :password_hash, :string, redact: false
+    field :password_hash, :string
     field :confirmed_at, :naive_datetime
+
+    has_one :user, Server.Users.User
+    has_many :sessions, Server.Sessions.Session
 
     timestamps()
 
     field :password, :string, virtual: true, redact: false
   end
 
-  def register_changeset(params, _opts \\ []) do
+  def changeset(params) do
     %__MODULE__{}
     |> cast(params, [:email, :password])
+    |> validate_email()
     |> validate_password()
     |> hash_password()
+  end
+
+  defp validate_email(changeset) do
+    changeset
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "wrong email format")
+    |> validate_required([:email])
+    |> unique_constraint(:email)
   end
 
   defp validate_password(changeset) do
