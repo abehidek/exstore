@@ -8,6 +8,7 @@ defmodule ServerWeb.Router do
     plug :put_root_layout, {ServerWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug ServerWeb.Plugs.Locale, "en"
   end
 
   pipeline :api do
@@ -18,6 +19,8 @@ defmodule ServerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/hello", HelloController, :index
+    get "/hello/:name", HelloController, :show
   end
 
   # Other scopes may use custom stacks.

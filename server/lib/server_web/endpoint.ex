@@ -47,5 +47,17 @@ defmodule ServerWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug :introspect
   plug ServerWeb.Router
+
+  def introspect(%Plug.Conn{} = conn, _opts) do
+    IO.puts """
+    Verb: #{inspect(conn.method)}
+    Host: #{inspect(conn.host)}
+    Req. Headers: #{inspect(conn.req_headers)}
+    Req. Cookies: #{inspect(conn.req_cookies)}
+    """
+
+    conn
+  end
 end
