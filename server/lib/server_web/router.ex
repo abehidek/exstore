@@ -27,6 +27,8 @@ defmodule ServerWeb.Router do
   scope "/api", ServerWeb do
     pipe_through :api
 
+    resources "/example", ExampleController, except: [:new, :edit]
+
     scope "/auth" do
       get "/me", AuthController, :show
       post "/login", AuthController, :create
