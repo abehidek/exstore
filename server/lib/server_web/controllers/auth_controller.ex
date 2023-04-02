@@ -1,7 +1,10 @@
 defmodule ServerWeb.AuthController do
   use ServerWeb, :controller
+  use Goal
 
   plug ServerWeb.Plugs.Authenticate when action in [:show]
+
+  action_fallback ServerWeb.FallbackController
 
   def show(conn, _params) do
     conn
@@ -9,12 +12,55 @@ defmodule ServerWeb.AuthController do
     |> json(%{message: "Succesfully retrieved user"})
   end
 
-  def create(conn, %{"email" => email, "password" => password}) do
-    IO.inspect(email)
-    IO.inspect(password)
+  @spec validate_email(%Plug.Conn{}, String.t()) :: %Plug.Conn{} | {:error, :unauthorized}
+  defp validate_email(conn, email) do
+    case Server.Auth.get_account_by_email(email) do
+      nil ->
+        ServerWeb.FallbackController.call(conn, {:error, :unauthorized})
 
-    conn
-    |> put_status(:ok)
-    |> json(%{message: "Succesfully logged in"})
+      %Server.Auth.Account{} = account ->
+        conn
+        |> assign(:account, account)
+    end
+  end
+
+  @spec validate_password(%Plug.Conn{}, String.t()) :: %Plug.Conn{} | {:error, :unauthorized}
+  defp validate_password(%Plug.Conn{assigns: %{account: account}} = conn, password) do
+    case Bcrypt.verify_pass(password, account.password_hash) do
+      false -> ServerWeb.FallbackController.call(conn, {:error, :unauthorized})
+      true -> conn
+    end
+  end
+
+  @max_age 60 * 60 * 24 * 60
+  @session_cookie [sign: true, max_age: @max_age, same_site: "None", secure: true]
+
+  defp create_session(%Plug.Conn{assigns: %{account: account}} = conn) do
+    case Server.Auth.create_session(account) do
+      {:error, %Ecto.Changeset{} = changeset} -> ServerWeb.FallbackController.call(conn, {:error, changeset})
+      {:ok, %Server.Auth.Session{} = session} ->
+        conn
+        |> put_resp_cookie("sessionId", session.id, @session_cookie)
+    end
+  end
+
+  def create(conn, params) do
+    case validate(:create, params) do
+      {:ok, %{email: email, password: password}} ->
+        conn
+        |> validate_email(email)
+        |> validate_password(password)
+        |> create_session()
+        |> put_status(:ok)
+        |> render(:show)
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  defparams :create do
+    required(:email, :string)
+    required(:password, :string)
   end
 end

@@ -12,6 +12,7 @@ defmodule ServerWeb.FallbackController do
     |> put_status(:unprocessable_entity)
     |> put_view(json: ServerWeb.ChangesetJSON)
     |> render(:error, changeset: changeset)
+    |> halt()
   end
 
   # This clause is an example of how to handle resources that cannot be found.
@@ -20,5 +21,14 @@ defmodule ServerWeb.FallbackController do
     |> put_status(:not_found)
     |> put_view(html: ServerWeb.ErrorHTML, json: ServerWeb.ErrorJSON)
     |> render(:"404")
+    |> halt()
+  end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(html: ServerWeb.ErrorHTML, json: ServerWeb.ErrorJSON)
+    |> render(:"401")
+    |> halt()
   end
 end

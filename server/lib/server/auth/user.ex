@@ -1,4 +1,4 @@
-defmodule Server.Users.User do
+defmodule Server.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule Server.Users.User do
     field :full_name, :string
     field :biography, :string
 
-    belongs_to :account, Server.Accounts.Account
+    belongs_to :account, Server.Auth.Account
 
     timestamps()
   end

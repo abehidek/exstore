@@ -1,4 +1,4 @@
-defmodule Server.Accounts.Account do
+defmodule Server.Auth.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,8 +9,8 @@ defmodule Server.Accounts.Account do
     field :password_hash, :string
     field :confirmed_at, :naive_datetime
 
-    has_one :user, Server.Users.User
-    has_many :sessions, Server.Sessions.Session
+    has_one :user, Server.Auth.User
+    has_many :sessions, Server.Auth.Session
 
     timestamps()
 
@@ -42,7 +42,7 @@ defmodule Server.Accounts.Account do
     password = get_change(changeset, :password)
 
     changeset
-    |> put_change(:password_hash, password)
+    |> put_change(:password_hash, Bcrypt.hash_pwd_salt(password))
     |> delete_change(:password)
   end
 end

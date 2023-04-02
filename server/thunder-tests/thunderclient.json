@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "a14ce821-3dbb-41be-9ef1-bc4871165f41",
+    "colId": "a20a7811-8e5e-40c6-a7e6-59dbf66d5697",
+    "containerId": "dd212040-32b0-481a-ac02-c5afb0b092e6",
+    "name": "Create Session",
+    "url": "localhost:4000/api/auth/login",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-04-01T01:21:37.376Z",
+    "modified": "2023-04-02T20:01:19.434Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\": \"abe@email.com\",\n  \"password\": \"12345678\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]
