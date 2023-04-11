@@ -1,4 +1,4 @@
-defmodule Server.Repo.Migrations.AddAuthTables do
+defmodule Server.Repo.Migrations.DatabaseSchema do
   use Ecto.Migration
 
   def change do
@@ -33,6 +33,12 @@ defmodule Server.Repo.Migrations.AddAuthTables do
     create index(:users, [:full_name])
     create unique_index(:users, [:account_id])
 
+    create table(:example, primary_key: false) do
+      add :id, :binary_id, primary_key: true
+      add :title, :string
+      add :body, :text
 
+      timestamps()
+    end
   end
 end

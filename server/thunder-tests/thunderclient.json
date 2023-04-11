@@ -22,5 +22,19 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "eb270b84-53b6-41d7-b97c-774301a6f273",
+    "colId": "a20a7811-8e5e-40c6-a7e6-59dbf66d5697",
+    "containerId": "dd212040-32b0-481a-ac02-c5afb0b092e6",
+    "name": "Show Session",
+    "url": "localhost:4000/api/auth/me",
+    "method": "GET",
+    "sortNum": 15000,
+    "created": "2023-04-11T23:20:53.385Z",
+    "modified": "2023-04-11T23:44:55.604Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

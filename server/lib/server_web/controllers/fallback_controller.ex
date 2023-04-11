@@ -31,4 +31,12 @@ defmodule ServerWeb.FallbackController do
     |> render(:"401")
     |> halt()
   end
+
+  def call(conn, {:error, :internal_server_error}) do
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(html: ServerWeb.ErrorHTML, json: ServerWeb.ErrorJSON)
+    |> render(:"500")
+    |> halt()
+  end
 end
