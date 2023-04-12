@@ -32,7 +32,7 @@ defmodule ServerWeb.Router do
     scope "/auth" do
       get "/me", AuthController, :show
       post "/login", AuthController, :create
-      # delete "/logout", AuthController, :delete
+      delete "/logout", AuthController, :delete
     end
 
     # scope "/users" do

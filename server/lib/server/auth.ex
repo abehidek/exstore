@@ -22,4 +22,11 @@ defmodule Server.Auth do
   def create_session(%Server.Auth.Account{} = account) do
     %{account_id: account.id} |> Server.Auth.Session.changeset() |> Server.Repo.insert()
   end
+
+  def delete_session(session_id) do
+    Server.Auth.Session
+    |> where(id: ^session_id)
+    |> Server.Repo.one()
+    |> Server.Repo.delete()
+  end
 end

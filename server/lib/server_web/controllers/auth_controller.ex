@@ -2,21 +2,14 @@ defmodule ServerWeb.AuthController do
   use ServerWeb, :controller
   use Goal
 
-  plug ServerWeb.Plugs.Authenticate when action in [:show]
+  plug ServerWeb.Plugs.Authenticate when action in [:show, :delete]
 
   action_fallback ServerWeb.FallbackController
 
   def show(conn, _params) do
-    with %{cookies: %{"session_id" => session_id}} <- fetch_cookies(conn, signed: ~w(session_id)),
-      %Server.Auth.Account{} = account <- Server.Auth.get_account_by_session_id(session_id) do
-      conn
-      |> put_status(:ok)
-      |> assign(:account, account)
-      |> render(:show)
-    else
-      %{cookies: %{}} -> ServerWeb.FallbackController.call(conn, {:error, :unauthorized})
-      _ -> ServerWeb.FallbackController.call(conn, {:error, :internal_server_error})
-    end
+    conn
+    |> put_status(:ok)
+    |> render(:show)
   end
 
   @spec validate_email(%Plug.Conn{}, String.t()) :: %Plug.Conn{} | {:error, :unauthorized}
@@ -40,7 +33,7 @@ defmodule ServerWeb.AuthController do
   end
 
   @max_age 60 * 60 * 24 * 60
-  @session_cookie sign: true, max_age: @max_age, same_site: "None", secure: true
+  @session_cookie sign: true, max_age: @max_age#, same_site: "None", secure: true
 
   defp create_session(%Plug.Conn{assigns: %{account: account}} = conn) do
     case Server.Auth.create_session(account) do
@@ -69,5 +62,15 @@ defmodule ServerWeb.AuthController do
   defparams :create do
     required(:email, :string)
     required(:password, :string)
+  end
+
+  def delete(%Plug.Conn{assigns: %{account: _account, session_id: session_id}} = conn, _params) do
+    # needs to get session id from authenticate plug (middleware :o)
+    Server.Auth.delete_session(session_id) # Don't care wether this will fail or not
+
+    conn
+    |> put_status(:ok)
+    |> delete_resp_cookie("session_id")
+    |> json(%{message: "Logout succesfully"})
   end
 end
