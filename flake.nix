@@ -19,17 +19,17 @@
     devShells = forAllSystems (system: {
       default = let
         pkgs = nixpkgs.legacyPackages.${system};
-        node16Pkgs = import nixpkgs {
+        node18Pkgs = import nixpkgs {
           inherit system;
-          overlays = [(final: prev: { nodejs = prev.nodejs-16_x; })];
+          overlays = [(final: prev: { nodejs = prev.nodejs_18; })];
         };
       in pkgs.mkShell {
         nativeBuildInputs = [ pkgs.bashInteractive ];
         buildInputs = [
           # Node stuff
-          node16Pkgs.nodejs
-          node16Pkgs.yarn
-          node16Pkgs.nodePackages.pnpm
+          node18Pkgs.nodejs
+          node18Pkgs.yarn
+          node18Pkgs.nodePackages.pnpm
 
           # Elixir
           pkgs.elixir
