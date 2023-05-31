@@ -10,7 +10,7 @@ defmodule ServerWeb.Schema.Auth do
     field(:name, non_null(:string))
     field(:email, non_null(:string))
 
-    field(:password, non_null(:string))
+    field(:password_hash, non_null(:string))
 
     field(:updated_at, non_null(:naive_datetime))
     field(:inserted_at, non_null(:naive_datetime))
