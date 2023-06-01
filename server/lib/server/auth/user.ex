@@ -49,4 +49,8 @@ defmodule Server.Auth.User do
       changeset
     end
   end
+
+  def valid_password?(%__MODULE__{} = user, password) when is_binary(password) do
+    Bcrypt.verify_pass(password, user.password_hash)
+  end
 end

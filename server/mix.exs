@@ -44,7 +44,7 @@ defmodule Server.MixProject do
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:absinthe_error_payload, "~> 1.0"}
+      {:crudry, "~> 2.4"}
     ]
   end
 

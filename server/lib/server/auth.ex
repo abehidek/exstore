@@ -39,6 +39,10 @@ defmodule Server.Auth do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_email(email) when is_binary(email) do
+    Repo.get_by(User, email: email)
+  end
+
   @doc """
   Creates a user.
 
@@ -122,4 +126,21 @@ defmodule Server.Auth do
   end
 
   def delete_user_session(%UserSession{} = user_session), do: Repo.delete(user_session)
+
+  def verify_user(%{email: email, password: password})
+      when is_binary(email) and is_binary(password) do
+    with %User{} = user <- get_user_by_email(email),
+         true <- User.valid_password?(user, password) do
+      {:ok, user}
+    else
+      nil ->
+        {:error, "User email or password wrong"}
+
+      false ->
+        {:error, "User email or password wrong"}
+
+      _ ->
+        {:error, "Internal server error"}
+    end
+  end
 end
