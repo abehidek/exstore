@@ -5,6 +5,8 @@ defmodule ServerWeb.Schema.Inventory do
 
   object :inventory_query do
     field :list_products, type: list_of(:product) do
+      middleware ServerWeb.Middleware.Authentication
+
       resolve(fn _, _ ->
         {:ok, Inventory.list_products()}
       end)
@@ -36,6 +38,8 @@ defmodule ServerWeb.Schema.Inventory do
     field :create_product, type: non_null(:product) do
       arg(:product, non_null(:create_product_input))
 
+      middleware ServerWeb.Middleware.Authentication
+
       resolve(fn %{product: product}, _ ->
         case Inventory.create_product(product) do
           {:ok, %Inventory.Product{} = product} -> {:ok, product}
@@ -47,6 +51,8 @@ defmodule ServerWeb.Schema.Inventory do
 
     field :delete_product, type: non_null(:product) do
       arg(:product_id, non_null(:integer))
+
+      middleware ServerWeb.Middleware.Authentication
 
       resolve(fn %{product_id: product_id}, _ ->
         case Inventory.get_product(product_id) do

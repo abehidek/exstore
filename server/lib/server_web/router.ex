@@ -5,16 +5,28 @@ defmodule ServerWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug ServerWeb.Context
+  end
+
   scope "/api", ServerWeb do
     pipe_through :api
   end
 
-  forward "/graphql", Absinthe.Plug, schema: ServerWeb.Schema
+  scope "/graphql" do
+    pipe_through :graphql
+
+    forward "/", Absinthe.Plug, schema: ServerWeb.Schema
+  end
 
   if Mix.env() == :dev do
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: ServerWeb.Schema,
-      interface: :playground
+    scope "/graphiql" do
+      pipe_through :graphql
+
+      forward "/", Absinthe.Plug.GraphiQL,
+        schema: ServerWeb.Schema,
+        interface: :playground
+    end
   end
 
   # Enable LiveDashboard in development

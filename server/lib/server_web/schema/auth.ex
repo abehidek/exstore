@@ -37,22 +37,26 @@ defmodule ServerWeb.Schema.Auth do
     field :sign_in, type: :sign_in_payload do
       arg(:credentials, non_null(:sign_in_input))
 
-      resolve(fn %{credentials: credentials}, _ ->
-        case Server.Auth.verify_user(credentials) do
-          {:ok, %Server.Auth.User{} = user} ->
-            case Server.Auth.create_user_session(%{user_id: user.id}) do
-              {:ok, %Server.Auth.UserSession{} = created_user_session} ->
-                {:ok, created_user_session |> Server.Repo.preload(:user)}
+      resolve(fn %{credentials: credentials}, %{context: %{user_session: user_session}} ->
+        if user_session != nil do
+          {:error, "Already signed in"}
+        else
+          case Server.Auth.verify_user(credentials) do
+            {:ok, %Server.Auth.User{} = user} ->
+              case Server.Auth.create_user_session(%{user_id: user.id}) do
+                {:ok, %Server.Auth.UserSession{} = created_user_session} ->
+                  {:ok, created_user_session |> Server.Repo.preload(:user)}
 
-              {:error, %Ecto.Changeset{} = changeset} ->
-                {:error, Error.error_payload(changeset)}
+                {:error, %Ecto.Changeset{} = changeset} ->
+                  {:error, Error.error_payload(changeset)}
 
-              _ ->
-                {:error, "Internal server error"}
-            end
+                _ ->
+                  {:error, "Internal server error"}
+              end
 
-          {:error, reason} ->
-            {:error, reason}
+            {:error, reason} ->
+              {:error, reason}
+          end
         end
       end)
     end
@@ -72,12 +76,10 @@ defmodule ServerWeb.Schema.Auth do
     end
 
     field :sign_out, type: non_null(:me_payload) do
-      arg(:auth, non_null(:me_input))
+      middleware ServerWeb.Middleware.Authentication
 
-      resolve(fn %{auth: %{token: token}}, _ ->
-        IO.inspect(token)
-
-        case Server.Auth.get_user_session_by_token(token) do
+      resolve(fn _, %{context: %{user_session: user_session}} ->
+        case Server.Auth.get_user_session_by_token(user_session.token) do
           %Server.Auth.UserSession{} = user_session ->
             case user_session |> Server.Auth.delete_user_session() do
               {:ok, %Server.Auth.UserSession{} = deleted_user_session} ->
@@ -97,10 +99,6 @@ defmodule ServerWeb.Schema.Auth do
     end
   end
 
-  input_object :me_input do
-    field(:token, non_null(:string))
-  end
-
   object :me_payload do
     field(:id, non_null(:string))
     field(:token, non_null(:string))
@@ -111,16 +109,10 @@ defmodule ServerWeb.Schema.Auth do
 
   object :auth_query do
     field :me, type: :me_payload do
-      arg(:auth, non_null(:me_input))
+      middleware ServerWeb.Middleware.Authentication
 
-      resolve(fn %{auth: %{token: token}}, _ ->
-        case Server.Auth.get_user_session_by_token(token) do
-          %Server.Auth.UserSession{} = user_session ->
-            {:ok, user_session |> Server.Repo.preload(:user)}
-
-          nil ->
-            {:error, "Session not found"}
-        end
+      resolve(fn _, %{context: %{user_session: user_session}} ->
+        {:ok, user_session}
       end)
     end
   end
