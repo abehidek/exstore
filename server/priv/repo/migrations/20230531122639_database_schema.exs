@@ -26,5 +26,20 @@ defmodule Server.Repo.Migrations.DatabaseSchema do
 
     create index(:users_sessions, [:user_id])
     create unique_index(:users_sessions, [:token])
+
+    # PRODUCTS
+    create table(:products) do
+      add :name, :string, null: false
+      add :photo, :string, null: true
+
+      timestamps()
+    end
+
+    # STOCK
+    create table(:stocks) do
+      add :product_id, references(:products, on_delete: :delete_all), null: false
+      add :quantity, :integer, null: false
+      add :unit_price_in_cents, :integer, null: false
+    end
   end
 end

@@ -110,10 +110,6 @@ defmodule ServerWeb.Schema.Auth do
   end
 
   object :auth_query do
-    field :fizz, :string do
-      resolve(fn _, _ -> {:ok, "Fizz buzz"} end)
-    end
-
     field :me, type: :me_payload do
       arg(:auth, non_null(:me_input))
 
