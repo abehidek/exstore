@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import {
   Exact,
   SignInInput,
@@ -17,6 +17,7 @@ import {
 import { Alert } from "react-native";
 import { delToken, setToken } from "./token";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type SignInFn = (
   options?: MutationFunctionOptions<
     SignInMutation,
@@ -40,6 +41,7 @@ export type SignOutFn = (
       >
     | undefined
 ) => Promise<any>;
+/* eslint-enable */
 
 export type AuthContextDataProps =
   | {
@@ -129,7 +131,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   `);
 
   const [signOut] = useMutation(SIGN_OUT, {
-    onCompleted: async (res) => {
+    onCompleted: async (_) => {
       Alert.alert("Signed out succesfully!");
       delToken().then(() => query.refetch());
     },

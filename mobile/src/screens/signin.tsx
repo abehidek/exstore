@@ -1,28 +1,8 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-} from "react-native";
+import { Button, Text, View, SafeAreaView, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuth } from "../auth/AuthContext";
-
-const white = "#fff";
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    backgroundColor: white,
-    display: "flex",
-    flex: 1,
-    height: "100%",
-    justifyContent: "center",
-  },
-});
 
 const signInSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({
@@ -59,7 +39,7 @@ export const SignInScreen: React.FC = () => {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
       <View>
         <Controller
           control={control}

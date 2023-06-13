@@ -1,24 +1,9 @@
 import { ScreenProps } from "../../App";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 
-const white = "#fff";
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    backgroundColor: white,
-    display: "flex",
-    flex: 1,
-    height: "100%",
-    justifyContent: "center",
-  },
-});
-
-export const ProductsPage: React.FC<ScreenProps<"Products">> = ({
-  navigation,
-}) => {
+export const ProductsPage: React.FC<ScreenProps<"Products">> = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
       <Text>Products</Text>
     </SafeAreaView>
   );
