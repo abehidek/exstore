@@ -5,14 +5,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignInScreen } from "./src/screens/signin";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ProductsPage } from "./src/screens/products";
+import { ProductsPage } from "./src/screens/products/products";
 import { View, Text } from "react-native";
 import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
+import { CreateProductPage } from "./src/screens/products/create";
 
 export type RootStackParamList = {
   Home: undefined;
   SignIn: undefined;
   Products: undefined;
+  CreateProductPage: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =
@@ -41,6 +43,11 @@ export const NavigationLayer = () => {
             name="Products"
             component={ProductsPage}
             options={{ title: "Products" }}
+          />
+          <Stack.Screen
+            name="CreateProductPage"
+            component={CreateProductPage}
+            options={{ title: "Create Product" }}
           />
         </Stack.Navigator>
       ) : (

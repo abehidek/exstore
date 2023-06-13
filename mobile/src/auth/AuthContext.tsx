@@ -16,6 +16,7 @@ import {
 } from "@apollo/client";
 import { Alert } from "react-native";
 import { delToken, setToken } from "./token";
+import { client } from "../client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type SignInFn = (
@@ -87,7 +88,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
   `);
 
-  const query = useQuery(ME);
+  const query = useQuery(ME, { fetchPolicy: "no-cache" });
 
   const SIGN_IN = gql(`
     mutation signIn($credentials: SignInInput!) {
@@ -111,8 +112,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       Alert.alert("Signed in succesfully!");
       setToken(res.signIn.token).then(() => query.refetch());
     },
-    onError: (err) =>
+    onError: (err) => {
       Alert.alert("Something wrong happened while signing in", err.message),
+        client.refetchQueries({
+          include: ["getMe"],
+        });
+    },
   });
 
   const SIGN_OUT = gql(`

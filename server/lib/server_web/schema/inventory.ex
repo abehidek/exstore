@@ -4,7 +4,7 @@ defmodule ServerWeb.Schema.Inventory do
   alias Server.{Repo, Inventory}, warn: false
 
   object :inventory_query do
-    field :list_products, type: list_of(:product) do
+    field :list_products, type: list_of(non_null(:product)) do
       middleware ServerWeb.Middleware.Authentication
 
       resolve(fn _, _ ->
