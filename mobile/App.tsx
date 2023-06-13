@@ -5,10 +5,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignInScreen } from "./src/screens/signin";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ProductsPage } from "./src/screens/products";
+import { View, Text } from "react-native";
+import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   SignIn: undefined;
+  Products: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =
@@ -16,19 +20,42 @@ export type ScreenProps<T extends keyof RootStackParamList> =
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+export const NavigationLayer = () => {
+  const { loading, error, user } = useAuth();
+
+  if (loading)
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+
+  if (error) console.log(JSON.stringify(error));
+
   return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
+    <NavigationContainer>
+      {user ? (
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
-            name="SignIn"
-            component={SignInScreen}
-            options={{ title: "Sign in" }}
+            name="Products"
+            component={ProductsPage}
+            options={{ title: "Products" }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
+      ) : (
+        <SignInScreen />
+      )}
+    </NavigationContainer>
+  );
+};
+
+export default function App() {
+  return (
+    <ApolloProvider client={client}>
+      <AuthContextProvider>
+        <NavigationLayer />
+      </AuthContextProvider>
     </ApolloProvider>
   );
 }

@@ -3,6 +3,7 @@ defmodule ServerWeb.Schema.Auth do
   alias ServerWeb.Schema.Error
 
   object :user, description: "Basic unit of authentication" do
+    field(:id, non_null(:integer))
     field(:address, non_null(:string))
     field(:cpf, non_null(:string))
     field(:name, non_null(:string))

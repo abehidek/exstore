@@ -1,14 +1,6 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Alert,
-} from "react-native";
+import { Button, StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { ScreenProps } from "../../App";
-import { OptionalAuthLayout } from "../components/OptionalAuthLayout";
-import { delToken } from "../auth";
+import { useAuth } from "../auth/AuthContext";
 
 const white = "#fff";
 
@@ -24,38 +16,25 @@ const styles = StyleSheet.create({
 });
 
 export const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
+  const { signOut, user } = useAuth();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!!!</Text>
-      <OptionalAuthLayout>
-        {({ user, refetch }) => (
-          <View>
-            <Button title="Refetch data" onPress={() => refetch()} />
-            {user ? (
-              <View>
-                <Text>User session: {JSON.stringify(user)}</Text>
-                <Button
-                  onPress={async () => {
-                    delToken().then(() => {
-                      refetch();
-                      Alert.alert("Signed off");
-                    });
-                  }}
-                  title="Sign out!"
-                />
-              </View>
-            ) : (
-              <View>
-                <Text>No user session found</Text>
-                <Button
-                  onPress={() => navigation.navigate("SignIn")}
-                  title="Sign in here!"
-                />
-              </View>
-            )}
-          </View>
-        )}
-      </OptionalAuthLayout>
+      <Text>{JSON.stringify(user)}</Text>
+
+      <View>
+        <Button
+          onPress={() => {
+            signOut();
+          }}
+          title="Sign out!"
+        />
+      </View>
+
+      <Button
+        onPress={() => navigation.navigate("Products")}
+        title="Products Page"
+      />
     </SafeAreaView>
   );
 };

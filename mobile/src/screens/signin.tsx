@@ -5,16 +5,11 @@ import {
   View,
   SafeAreaView,
   TextInput,
-  Alert,
 } from "react-native";
-import { ScreenProps } from "../../App";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { gql } from "../__gql__";
-import { useMutation } from "@apollo/client";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setToken } from "../auth";
+import { useAuth } from "../auth/AuthContext";
 
 const white = "#fff";
 
@@ -40,22 +35,7 @@ const signInSchema = z.object({
 
 type SignInSchema = z.infer<typeof signInSchema>;
 
-const SIGN_IN = gql(`
-  mutation signIn($credentials: SignInInput!) {
-    signIn(credentials: $credentials) {
-      user {
-        address
-        cpf
-        email
-        name
-      }
-      token
-      userId
-    }
-  }
-`);
-
-export const SignInScreen: React.FC<ScreenProps<"SignIn">> = (props) => {
+export const SignInScreen: React.FC = () => {
   const {
     control,
     handleSubmit,
@@ -68,15 +48,7 @@ export const SignInScreen: React.FC<ScreenProps<"SignIn">> = (props) => {
     },
   });
 
-  const [signIn, _] = useMutation(SIGN_IN, {
-    onCompleted: async (res) => {
-      if (!res.signIn) return;
-      Alert.alert("Signed in succesfully!");
-      await setToken(res.signIn.token);
-      props.navigation.navigate("Home");
-    },
-    onError: (err) => Alert.alert("Something wrong happened", err.message),
-  });
+  const { signIn } = useAuth();
 
   const onSubmit = handleSubmit((data) => {
     signIn({

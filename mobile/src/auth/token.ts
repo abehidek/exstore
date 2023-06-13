@@ -1,6 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { gql } from "./__gql__";
-import { useQuery } from "@apollo/client";
 
 const TOKEN_NAME = "@token";
 
@@ -82,23 +80,4 @@ export const delToken = async (): Promise<DelTokenOk | DelTokenError> => {
       message: JSON.stringify(error),
     };
   }
-};
-
-export const useSession = () => {
-  const ME = gql(`
-    query getMe {
-      me {
-        token
-        id
-        userId
-        user {
-          name address email cpf insertedAt updatedAt passwordHash
-        }
-      }
-    }
-  `);
-
-  const query = useQuery(ME);
-
-  return query;
 };
