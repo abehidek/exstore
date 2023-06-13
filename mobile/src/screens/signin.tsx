@@ -14,6 +14,7 @@ import { z } from "zod";
 import { gql } from "../__gql__";
 import { useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setToken } from "../auth";
 
 const white = "#fff";
 
@@ -71,7 +72,7 @@ export const SignInScreen: React.FC<ScreenProps<"SignIn">> = (props) => {
     onCompleted: async (res) => {
       if (!res.signIn) return;
       Alert.alert("Signed in succesfully!");
-      await AsyncStorage.setItem("@token", res.signIn.token);
+      await setToken(res.signIn.token);
       props.navigation.navigate("Home");
     },
     onError: (err) => Alert.alert("Something wrong happened", err.message),

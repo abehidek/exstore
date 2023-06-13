@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { ScreenProps } from "../../App";
 import { OptionalAuthLayout } from "../components/OptionalAuthLayout";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { delToken } from "../auth";
 
 const white = "#fff";
 
@@ -36,7 +36,7 @@ export const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
                 <Text>User session: {JSON.stringify(user)}</Text>
                 <Button
                   onPress={async () => {
-                    AsyncStorage.removeItem("@token").then(() => {
+                    delToken().then(() => {
                       refetch();
                       Alert.alert("Signed off");
                     });

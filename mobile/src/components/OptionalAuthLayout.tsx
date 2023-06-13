@@ -2,6 +2,7 @@ import { ApolloQueryResult, useQuery } from "@apollo/client";
 import { Exact, GetMeQuery, User } from "../__gql__/graphql";
 import { gql } from "../__gql__";
 import { View, Text } from "react-native";
+import { useSession } from "../auth";
 
 type Props = {
   children: ({
@@ -22,20 +23,7 @@ type Props = {
 };
 
 export const OptionalAuthLayout: React.FC<Props> = (props) => {
-  const ME = gql(`
-    query getMe {
-      me {
-        token
-        id
-        userId
-        user {
-          name address email cpf insertedAt updatedAt passwordHash
-        }
-      }
-    }
-  `);
-
-  const { loading, error, data, refetch } = useQuery(ME);
+  const { loading, error, data, refetch } = useSession();
 
   if (error) {
     console.log(JSON.stringify(error));
