@@ -41,6 +41,9 @@ dependencies:
   react-native:
     specifier: 0.71.3
     version: 0.71.3(@babel/core@7.19.3)(@babel/preset-env@7.21.5)(react@18.2.0)
+  react-native-mask-text:
+    specifier: ^0.14.1
+    version: 0.14.1(react-native@0.71.3)(react@18.2.0)
   react-native-safe-area-context:
     specifier: 4.5.0
     version: 4.5.0(react-native@0.71.3)(react@18.2.0)
@@ -4390,6 +4393,10 @@ packages:
   /big-integer@1.6.51:
     resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==}
     engines: {node: '>=0.6'}
+    dev: false
+
+  /bignumber.js@9.1.1:
+    resolution: {integrity: sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==}
     dev: false
 
   /binary-extensions@2.2.0:
@@ -9039,6 +9046,17 @@ packages:
 
   /react-native-gradle-plugin@0.71.18:
     resolution: {integrity: sha512-7F6bD7B8Xsn3JllxcwHhFcsl9aHIig47+3eN4IHFNqfLhZr++3ElDrcqfMzugM+niWbaMi7bJ0kAkAL8eCpdWg==}
+    dev: false
+
+  /react-native-mask-text@0.14.1(react-native@0.71.3)(react@18.2.0):
+    resolution: {integrity: sha512-tKjeqJcpPTlRHdBNrof4L5bNDT1b4ykLnFEilWlDb/Dq58YuenUiZkmYyoLOhnkWfRmVsbjNczIQN8JtOVPNjA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+    dependencies:
+      bignumber.js: 9.1.1
+      react: 18.2.0
+      react-native: 0.71.3(@babel/core@7.19.3)(@babel/preset-env@7.21.5)(react@18.2.0)
     dev: false
 
   /react-native-safe-area-context@4.5.0(react-native@0.71.3)(react@18.2.0):

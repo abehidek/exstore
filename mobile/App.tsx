@@ -6,7 +6,8 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
 
-import { SignInScreen } from "./src/screens/signin";
+import { SignInScreen } from "./src/screens/auth/signin";
+import { SignUpScreen } from "./src/screens/auth/signup";
 import { HomeScreen } from "./src/screens/home";
 import { ProductsScreen } from "./src/screens/products";
 import { CreateProductScreen } from "./src/screens/products/create";
@@ -14,6 +15,8 @@ import { StockItemsScreen } from "./src/screens/stock";
 import { CreateStockItemScreen } from "./src/screens/stock/create";
 
 export type RootStackParamList = {
+  SignInScreen: undefined;
+  SignUpScreen: undefined;
   HomeScreen: undefined;
   ProductsScreen: undefined;
   CreateProductScreen: undefined;
@@ -65,7 +68,19 @@ export const NavigationLayer = () => {
           />
         </Stack.Navigator>
       ) : (
-        <SignInScreen />
+        <Stack.Navigator>
+          {/* <SignInScreen /> */}
+          <Stack.Screen
+            name="SignInScreen"
+            component={SignInScreen}
+            options={{ title: "Sign in" }}
+          />
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignUpScreen}
+            options={{ title: "Sign up" }}
+          />
+        </Stack.Navigator>
       )}
     </NavigationContainer>
   );

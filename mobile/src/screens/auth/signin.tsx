@@ -2,7 +2,8 @@ import { Button, Text, View, SafeAreaView, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContext";
+import { ScreenProps } from "../../../App";
 
 const signInSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({
@@ -15,7 +16,7 @@ const signInSchema = z.object({
 
 type SignInSchema = z.infer<typeof signInSchema>;
 
-export const SignInScreen: React.FC = () => {
+export const SignInScreen: React.FC<ScreenProps<"SignInScreen">> = (props) => {
   const {
     control,
     handleSubmit,
@@ -72,6 +73,12 @@ export const SignInScreen: React.FC = () => {
         {errors.password && <Text>{errors.password.message}</Text>}
 
         <Button title="Submit" onPress={onSubmit} />
+
+        <Text>Does not have an account?</Text>
+        <Button
+          title="Sign up"
+          onPress={() => props.navigation.navigate("SignUpScreen")}
+        />
       </View>
     </SafeAreaView>
   );
