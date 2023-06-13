@@ -49,7 +49,10 @@ export type AuthContextDataProps =
       user: undefined;
       token: undefined;
       loading: true;
-      error: false;
+      error: {
+        result: false;
+        message: undefined;
+      };
       signIn: SignInFn;
       signOut: SignOutFn;
     }
@@ -57,7 +60,10 @@ export type AuthContextDataProps =
       user: User;
       token: string;
       loading: false;
-      error: false;
+      error: {
+        result: false;
+        message: undefined;
+      };
       signIn: SignInFn;
       signOut: SignOutFn;
     }
@@ -65,7 +71,10 @@ export type AuthContextDataProps =
       user: undefined;
       token: undefined;
       loading: false;
-      error: true;
+      error: {
+        result: true;
+        message: string;
+      };
       signIn: SignInFn;
       signOut: SignOutFn;
     };
@@ -154,7 +163,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       <AuthContext.Provider
         value={{
           loading: false,
-          error: true,
+          error: {
+            result: true,
+            message: query.error.message,
+          },
           user: undefined,
           token: undefined,
           signIn,
@@ -170,7 +182,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       <AuthContext.Provider
         value={{
           loading: true,
-          error: false,
+          error: {
+            result: false,
+            message: undefined,
+          },
           user: undefined,
           token: undefined,
           signIn,
@@ -185,7 +200,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         loading: false,
-        error: false,
+        error: {
+          result: false,
+          message: undefined,
+        },
         user: query.data.me.user,
         token: query.data.me.token,
         signIn,

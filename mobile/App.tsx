@@ -39,7 +39,7 @@ export const NavigationLayer = () => {
       </View>
     );
 
-  if (error) console.log(JSON.stringify(error));
+  if (error.result) console.log(error.message);
 
   return (
     <NavigationContainer>
