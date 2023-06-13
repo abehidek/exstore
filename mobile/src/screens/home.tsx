@@ -2,7 +2,9 @@ import { Button, Text, View, SafeAreaView } from "react-native";
 import { ScreenProps } from "../../App";
 import { useAuth } from "../auth/AuthContext";
 
-export const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
+export const HomeScreen: React.FC<ScreenProps<"HomeScreen">> = ({
+  navigation,
+}) => {
   const { signOut, user } = useAuth();
 
   return (
@@ -20,8 +22,8 @@ export const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
         </View>
 
         <Button
-          onPress={() => navigation.navigate("Products")}
-          title="Products Page"
+          onPress={() => navigation.navigate("ProductsScreen")}
+          title="Products"
         />
       </View>
     </SafeAreaView>

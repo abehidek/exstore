@@ -20,9 +20,9 @@ const createProductSchema = z.object({
 
 type CreateProductSchema = z.infer<typeof createProductSchema>;
 
-export const CreateProductPage: React.FC<ScreenProps<"CreateProductPage">> = (
-  props
-) => {
+export const CreateProductScreen: React.FC<
+  ScreenProps<"CreateProductScreen">
+> = (props) => {
   const CREATE_PRODUCT = gql(`
     mutation createProduct($product: CreateProductInput!) {
       createProduct(product:$product) {

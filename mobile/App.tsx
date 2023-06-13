@@ -1,20 +1,24 @@
-import { HomeScreen } from "./src/screens/home";
 import { client } from "./src/client";
 import { ApolloProvider } from "@apollo/client";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SignInScreen } from "./src/screens/signin";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ProductsPage } from "./src/screens/products/products";
 import { View, Text } from "react-native";
 import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
-import { CreateProductPage } from "./src/screens/products/create";
+
+import { SignInScreen } from "./src/screens/signin";
+import { HomeScreen } from "./src/screens/home";
+import { ProductsScreen } from "./src/screens/products";
+import { CreateProductScreen } from "./src/screens/products/create";
+import { StockItemsScreen } from "./src/screens/stock";
+import { CreateStockItemScreen } from "./src/screens/stock/create";
 
 export type RootStackParamList = {
-  Home: undefined;
-  SignIn: undefined;
-  Products: undefined;
-  CreateProductPage: undefined;
+  HomeScreen: undefined;
+  ProductsScreen: undefined;
+  CreateProductScreen: undefined;
+  StockItemsScreen: undefined;
+  CreateStockItemScreen: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =
@@ -38,16 +42,26 @@ export const NavigationLayer = () => {
     <NavigationContainer>
       {user ? (
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen
-            name="Products"
-            component={ProductsPage}
+            name="ProductsScreen"
+            component={ProductsScreen}
             options={{ title: "Products" }}
           />
           <Stack.Screen
-            name="CreateProductPage"
-            component={CreateProductPage}
+            name="CreateProductScreen"
+            component={CreateProductScreen}
             options={{ title: "Create Product" }}
+          />
+          <Stack.Screen
+            name="StockItemsScreen"
+            component={StockItemsScreen}
+            options={{ title: "Stock" }}
+          />
+          <Stack.Screen
+            name="CreateStockItemScreen"
+            component={CreateStockItemScreen}
+            options={{ title: "Create Stock Item" }}
           />
         </Stack.Navigator>
       ) : (

@@ -11,7 +11,9 @@ import { gql } from "../../__gql__";
 import { useMutation, useQuery } from "@apollo/client";
 import { Product } from "../../__gql__/graphql";
 
-export const ProductsPage: React.FC<ScreenProps<"Products">> = (props) => {
+export const ProductsScreen: React.FC<ScreenProps<"ProductsScreen">> = (
+  props
+) => {
   const DELETE_PRODUCT = gql(`
     mutation deleteProduct($productId:Int!){
       deleteProduct(productId:$productId){
@@ -63,7 +65,7 @@ export const ProductsPage: React.FC<ScreenProps<"Products">> = (props) => {
       <Text>Products</Text>
       <Button
         title="Create new product"
-        onPress={() => props.navigation.navigate("CreateProductPage")}
+        onPress={() => props.navigation.navigate("CreateProductScreen")}
       />
       {data && data.listProducts && data.listProducts.length > 0 ? (
         <FlatList
