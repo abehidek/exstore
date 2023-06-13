@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt passwordHash\n        }\n      }\n    }\n  ": types.GetMeDocument,
+    "\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt\n        }\n      }\n    }\n  ": types.GetMeDocument,
     "\n    mutation signIn($credentials: SignInInput!) {\n      signIn(credentials: $credentials) {\n        user {\n          id\n          address\n          cpf\n          email\n          name\n        }\n        token\n        userId\n      }\n    }\n  ": types.SignInDocument,
     "\n    mutation signOut {\n      signOut {\n        id\n        user {\n          cpf\n          name\n          cpf\n        }\n        token\n        userId\n      }\n    }\n  ": types.SignOutDocument,
 };
@@ -35,7 +35,7 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt passwordHash\n        }\n      }\n    }\n  "): (typeof documents)["\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt passwordHash\n        }\n      }\n    }\n  "];
+export function gql(source: "\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt\n        }\n      }\n    }\n  "): (typeof documents)["\n    query getMe {\n      me {\n        token\n        id\n        userId\n        user {\n          id name address email cpf insertedAt updatedAt\n        }\n      }\n    }\n  "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

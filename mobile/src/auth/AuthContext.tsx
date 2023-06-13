@@ -79,7 +79,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         id
         userId
         user {
-          id name address email cpf insertedAt updatedAt passwordHash
+          id name address email cpf insertedAt updatedAt
         }
       }
     }
