@@ -73,13 +73,15 @@ export const CreateProductScreen: React.FC<
 
   return (
     <AuthScreenLayout>
-      {(user) => (
-        <>
+      {(_) => (
+        <View className="w-full flex flex-col">
           <View>
+            <Text>Name: </Text>
             <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
+                  className="bg-gray-200 p-3 rounded-lg mt-2"
                   placeholder="Macbook Air Pro M1"
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -89,11 +91,12 @@ export const CreateProductScreen: React.FC<
               name="name"
             />
 
-            {errors.name && <Text>{errors.name.message}</Text>}
-
-            <Button title="Submit" onPress={onSubmit} />
+            {errors.name && <Text className="m-2">{errors.name.message}</Text>}
           </View>
-        </>
+          <View className="mt-4">
+            <Button title="Create" onPress={onSubmit} />
+          </View>
+        </View>
       )}
     </AuthScreenLayout>
   );

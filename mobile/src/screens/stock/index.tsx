@@ -1,9 +1,17 @@
-import { Alert, Button, View, Text, FlatList } from "react-native";
+import {
+  Alert,
+  Button,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { ScreenProps } from "../../../App";
 import { gql } from "../../__gql__";
 import { useMutation, useQuery } from "@apollo/client";
 import { Stock } from "../../__gql__/graphql";
 import { AuthScreenLayout } from "../../components/AuthScreenLayout";
+import Trash from "../../../assets/trash.svg";
 
 export const StockItemsScreen: React.FC<ScreenProps<"StockItemsScreen">> = (
   props
@@ -52,30 +60,36 @@ export const StockItemsScreen: React.FC<ScreenProps<"StockItemsScreen">> = (
   return (
     <AuthScreenLayout>
       {(_) => (
-        <>
-          <Button
-            title="Create new stock item"
+        <View className="w-full flex flex-col h-full">
+          <TouchableOpacity
+            className="bg-blue-500 py-3 px-5 flex justify-center items-center rounded-md"
             onPress={() => props.navigation.navigate("CreateStockItemScreen")}
-          />
-          {data && data.listStocks && data.listStocks.length > 0 ? (
-            <FlatList
-              data={data.listStocks}
-              keyExtractor={(e) => e.id.toString()}
-              renderItem={(e) => (
-                <StockItem
-                  stock={e.item}
-                  onDeleteStockItem={(id) =>
-                    deleteStock({
-                      variables: { stockId: id },
-                    })
-                  }
-                />
-              )}
-            />
-          ) : (
-            <Text>No stock found</Text>
-          )}
-        </>
+          >
+            <Text className="text-white font-bold text-lg">+</Text>
+          </TouchableOpacity>
+          <View className="mt-2">
+            {data && data.listStocks && data.listStocks.length > 0 ? (
+              <FlatList
+                data={data.listStocks}
+                keyExtractor={(e) => e.id.toString()}
+                renderItem={(e) => (
+                  <StockItem
+                    stock={e.item}
+                    onDeleteStockItem={(id) =>
+                      deleteStock({
+                        variables: { stockId: id },
+                      })
+                    }
+                  />
+                )}
+              />
+            ) : (
+              <View className="w-full flex h-full items-center py-36">
+                <Text>No stock found</Text>
+              </View>
+            )}
+          </View>
+        </View>
       )}
     </AuthScreenLayout>
   );
@@ -86,14 +100,17 @@ export const StockItem = (props: {
   onDeleteStockItem: (id: number) => void;
 }) => {
   return (
-    <View className="flex flex-row justify-center items-center p-4 bg-gray-300 rounded-lg gap-3">
-      <Text>name: {props.stock.product.name}</Text>
-      <Text>Quantity: {props.stock.quantity}</Text>
-      <Text>Price: R$ {(props.stock.unitPriceInCents / 100).toFixed(2)}</Text>
-      <Button
-        title="X"
-        onPress={() => props.onDeleteStockItem(props.stock.id)}
-      />
+    <View className="flex flex-row justify-between items-center p-4 bg-gray-200 rounded-lg mt-1">
+      <Text>{props.stock.product.name}</Text>
+      <View className="flex flex-row self-end gap-2">
+        <Text>Qtd: {props.stock.quantity}</Text>
+        <Text>R$ {(props.stock.unitPriceInCents / 100).toFixed(2)}</Text>
+        <Trash
+          width={20}
+          height={20}
+          onPress={() => props.onDeleteStockItem(props.stock.id)}
+        />
+      </View>
     </View>
   );
 };

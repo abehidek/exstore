@@ -100,57 +100,73 @@ export const CreateStockItemScreen: React.FC<
   return (
     <AuthScreenLayout>
       {(_) => (
-        <View>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <SelectList
-                setSelected={onChange}
-                data={products.map((p) => ({
-                  key: p.id,
-                  value: p.name,
-                }))}
-                save="key"
-              />
+        <View className="w-full flex flex-col">
+          <View className="mt-2">
+            <Text>Product: </Text>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <View className="mt-1">
+                  <SelectList
+                    setSelected={onChange}
+                    data={products.map((p) => ({
+                      key: p.id,
+                      value: p.name,
+                    }))}
+                    save="key"
+                    maxHeight={200}
+                  />
+                </View>
+              )}
+              name="productId"
+            />
+
+            {errors.productId && <Text>{errors.productId.message}</Text>}
+          </View>
+
+          <View className="mt-2">
+            <Text>Quantity: </Text>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  placeholder="Quantity"
+                  className="bg-gray-200 p-3 rounded-lg mt-1"
+                  onBlur={onBlur}
+                  onChangeText={(s) => onChange(Number(s))}
+                  keyboardType="numeric"
+                  value={value.toString()}
+                />
+              )}
+              name="quantity"
+            />
+
+            {errors.quantity && <Text>{errors.quantity.message}</Text>}
+          </View>
+
+          <View className="mt-2">
+            <Text>Price: </Text>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CurrencyInput
+                  value={value / 100}
+                  className="bg-gray-200 p-3 rounded-lg mt-1"
+                  onChangeValue={(v: number) => onChange(v * 100)}
+                  prefix="R$"
+                />
+              )}
+              name="unitPriceInCents"
+            />
+
+            {errors.unitPriceInCents && (
+              <Text>{errors.unitPriceInCents.message}</Text>
             )}
-            name="productId"
-          />
+          </View>
 
-          {errors.productId && <Text>{errors.productId.message}</Text>}
-
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                placeholder="Quantity"
-                onBlur={onBlur}
-                onChangeText={(s) => onChange(Number(s))}
-                keyboardType="numeric"
-                value={value.toString()}
-              />
-            )}
-            name="quantity"
-          />
-
-          {errors.quantity && <Text>{errors.quantity.message}</Text>}
-
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <CurrencyInput
-                value={value / 100}
-                onChangeValue={(v: number) => onChange(v * 100)}
-                prefix="R$"
-              />
-            )}
-            name="unitPriceInCents"
-          />
-
-          {errors.unitPriceInCents && (
-            <Text>{errors.unitPriceInCents.message}</Text>
-          )}
-
-          <Button title="Create" onPress={onSubmit} />
+          <View className="mt-4">
+            <Button title="Create" onPress={onSubmit} />
+          </View>
         </View>
       )}
     </AuthScreenLayout>

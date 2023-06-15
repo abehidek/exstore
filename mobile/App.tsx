@@ -55,7 +55,7 @@ export const NavigationLayer = () => {
     <NavigationContainer>
       {user ? (
         <Drawer.Navigator
-          initialRouteName="HomeScreen"
+          initialRouteName="StockItemsScreen"
           drawerContent={(props) => (
             <DrawerContentScrollView {...props}>
               <DrawerItemList {...props} />

@@ -22,7 +22,7 @@ export const AuthScreenLayout: React.FC<{
     );
 
   return (
-    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
+    <SafeAreaView className="bg-grey-100 h-screen flex items-center p-5 w-full overflow-hidden">
       {props.children(user)}
     </SafeAreaView>
   );
