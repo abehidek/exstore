@@ -41,13 +41,45 @@
 
 ## How to run it?
 
-Be sure to have at least those dependencies installed
+Be sure to have at least those dependencies installed:
 
 - Docker w/ Docker Compose or PostgreSQL properly configured
 - Node.js version 16 or above
 - pnpm
 - Elixir 1.14  + Erlang/OTP 25
 - A properly configured Mobile development environment compatible with expo [See how to configure it here](https://reactnative.dev/docs/environment-setup)
+
+or if you are using Nix with flakes enabled:
+
+- Docker w/ Docker Compose or PostgreSQL properly configured
+- A properly configured Mobile development environment compatible with expo [See how to configure it here](https://reactnative.dev/docs/environment-setup)
+
+which can be done by pasting these lines into your `configuration.nix`:
+
+```nix
+programs.adb.enable = true;
+
+virtualisation.docker.enable = true;
+environment.systemPackages = with pkgs; [ docker-compose ];
+users.users.<your-username>.extraGroups = [ "docker" "adbusers" ];
+```
+
+then after cloning repo:
+
+```sh
+git clone https://github.com/abehidek/exstore
+
+$ cd exstore
+
+# Use cachix if you want all dependencies builded
+$ nix shell nixpkgs#cachix
+$ cachix use exstore
+
+$ nix develop # if Nix is installed
+
+# or if you are using direnv
+$ direnv allow
+```
 
 
 ### If you are using Android connected w/ cable
