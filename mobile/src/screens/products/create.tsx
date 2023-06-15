@@ -6,6 +6,7 @@ import { useMutation } from "@apollo/client";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { client } from "../../client";
+import { AuthScreenLayout } from "../../components/AuthScreenLayout";
 
 const createProductSchema = z.object({
   name: z
@@ -71,25 +72,29 @@ export const CreateProductScreen: React.FC<
   });
 
   return (
-    <View>
-      <View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Macbook Air Pro M1"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
+    <AuthScreenLayout>
+      {(user) => (
+        <>
+          <View>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  placeholder="Macbook Air Pro M1"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="name"
             />
-          )}
-          name="name"
-        />
 
-        {errors.name && <Text>{errors.name.message}</Text>}
+            {errors.name && <Text>{errors.name.message}</Text>}
 
-        <Button title="Submit" onPress={onSubmit} />
-      </View>
-    </View>
+            <Button title="Submit" onPress={onSubmit} />
+          </View>
+        </>
+      )}
+    </AuthScreenLayout>
   );
 };

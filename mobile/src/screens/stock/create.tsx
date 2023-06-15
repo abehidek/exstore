@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { gql } from "../../__gql__";
 import { SelectList } from "react-native-dropdown-select-list";
 import CurrencyInput from "react-native-currency-input";
+import { AuthScreenLayout } from "../../components/AuthScreenLayout";
 
 const createStockSchema = z.object({
   productId: z.number(),
@@ -97,59 +98,61 @@ export const CreateStockItemScreen: React.FC<
   const products = data.listProducts;
 
   return (
-    <View>
-      <View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <SelectList
-              setSelected={onChange}
-              data={products.map((p) => ({
-                key: p.id,
-                value: p.name,
-              }))}
-              save="key"
-            />
+    <AuthScreenLayout>
+      {(_) => (
+        <View>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <SelectList
+                setSelected={onChange}
+                data={products.map((p) => ({
+                  key: p.id,
+                  value: p.name,
+                }))}
+                save="key"
+              />
+            )}
+            name="productId"
+          />
+
+          {errors.productId && <Text>{errors.productId.message}</Text>}
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="Quantity"
+                onBlur={onBlur}
+                onChangeText={(s) => onChange(Number(s))}
+                keyboardType="numeric"
+                value={value.toString()}
+              />
+            )}
+            name="quantity"
+          />
+
+          {errors.quantity && <Text>{errors.quantity.message}</Text>}
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <CurrencyInput
+                value={value / 100}
+                onChangeValue={(v: number) => onChange(v * 100)}
+                prefix="R$"
+              />
+            )}
+            name="unitPriceInCents"
+          />
+
+          {errors.unitPriceInCents && (
+            <Text>{errors.unitPriceInCents.message}</Text>
           )}
-          name="productId"
-        />
 
-        {errors.productId && <Text>{errors.productId.message}</Text>}
-
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Quantity"
-              onBlur={onBlur}
-              onChangeText={(s) => onChange(Number(s))}
-              keyboardType="numeric"
-              value={value.toString()}
-            />
-          )}
-          name="quantity"
-        />
-
-        {errors.quantity && <Text>{errors.quantity.message}</Text>}
-
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <CurrencyInput
-              value={value / 100}
-              onChangeValue={(v: number) => onChange(v * 100)}
-              prefix="R$"
-            />
-          )}
-          name="unitPriceInCents"
-        />
-
-        {errors.unitPriceInCents && (
-          <Text>{errors.unitPriceInCents.message}</Text>
-        )}
-
-        <Button title="Create" onPress={onSubmit} />
-      </View>
-    </View>
+          <Button title="Create" onPress={onSubmit} />
+        </View>
+      )}
+    </AuthScreenLayout>
   );
 };

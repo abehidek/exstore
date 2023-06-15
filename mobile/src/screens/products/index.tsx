@@ -10,6 +10,7 @@ import {
 import { gql } from "../../__gql__";
 import { useMutation, useQuery } from "@apollo/client";
 import { Product } from "../../__gql__/graphql";
+import { AuthScreenLayout } from "../../components/AuthScreenLayout";
 
 export const ProductsScreen: React.FC<ScreenProps<"ProductsScreen">> = (
   props
@@ -61,31 +62,35 @@ export const ProductsScreen: React.FC<ScreenProps<"ProductsScreen">> = (
   if (error) console.log(error);
 
   return (
-    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
-      <Text>Products</Text>
-      <Button
-        title="Create new product"
-        onPress={() => props.navigation.navigate("CreateProductScreen")}
-      />
-      {data && data.listProducts && data.listProducts.length > 0 ? (
-        <FlatList
-          data={data.listProducts}
-          keyExtractor={(e) => e.id.toString()}
-          renderItem={(e) => (
-            <ProductItem
-              product={e.item}
-              onDeleteProduct={(id) =>
-                deleteProduct({
-                  variables: { productId: id },
-                })
-              }
+    <AuthScreenLayout>
+      {(_) => (
+        <>
+          <Text>Products</Text>
+          <Button
+            title="Create new product"
+            onPress={() => props.navigation.navigate("CreateProductScreen")}
+          />
+          {data && data.listProducts && data.listProducts.length > 0 ? (
+            <FlatList
+              data={data.listProducts}
+              keyExtractor={(e) => e.id.toString()}
+              renderItem={(e) => (
+                <ProductItem
+                  product={e.item}
+                  onDeleteProduct={(id) =>
+                    deleteProduct({
+                      variables: { productId: id },
+                    })
+                  }
+                />
+              )}
             />
+          ) : (
+            <Text>No products found</Text>
           )}
-        />
-      ) : (
-        <Text>No products found</Text>
+        </>
       )}
-    </SafeAreaView>
+    </AuthScreenLayout>
   );
 };
 

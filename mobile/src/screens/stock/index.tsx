@@ -3,6 +3,7 @@ import { ScreenProps } from "../../../App";
 import { gql } from "../../__gql__";
 import { useMutation, useQuery } from "@apollo/client";
 import { Stock } from "../../__gql__/graphql";
+import { AuthScreenLayout } from "../../components/AuthScreenLayout";
 
 export const StockItemsScreen: React.FC<ScreenProps<"StockItemsScreen">> = (
   props
@@ -49,30 +50,34 @@ export const StockItemsScreen: React.FC<ScreenProps<"StockItemsScreen">> = (
   if (error) console.log(error);
 
   return (
-    <View>
-      <Button
-        title="Create new stock item"
-        onPress={() => props.navigation.navigate("CreateStockItemScreen")}
-      />
-      {data && data.listStocks && data.listStocks.length > 0 ? (
-        <FlatList
-          data={data.listStocks}
-          keyExtractor={(e) => e.id.toString()}
-          renderItem={(e) => (
-            <StockItem
-              stock={e.item}
-              onDeleteStockItem={(id) =>
-                deleteStock({
-                  variables: { stockId: id },
-                })
-              }
+    <AuthScreenLayout>
+      {(_) => (
+        <>
+          <Button
+            title="Create new stock item"
+            onPress={() => props.navigation.navigate("CreateStockItemScreen")}
+          />
+          {data && data.listStocks && data.listStocks.length > 0 ? (
+            <FlatList
+              data={data.listStocks}
+              keyExtractor={(e) => e.id.toString()}
+              renderItem={(e) => (
+                <StockItem
+                  stock={e.item}
+                  onDeleteStockItem={(id) =>
+                    deleteStock({
+                      variables: { stockId: id },
+                    })
+                  }
+                />
+              )}
             />
+          ) : (
+            <Text>No stock found</Text>
           )}
-        />
-      ) : (
-        <Text>No stock found</Text>
+        </>
       )}
-    </View>
+    </AuthScreenLayout>
   );
 };
 
