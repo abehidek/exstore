@@ -7,7 +7,9 @@
 </h1>
 
 <p align="center">
-  <a href="#development">Development</a> •
+  <a href="#technologies/stack">Technologies/Stack</a> •
+  <a href="#how-to-run-it">How to run it</a> •
+  <a href="#requirements">Requirements</a> •
   <a href="#license">License</a>
 </p>
 
