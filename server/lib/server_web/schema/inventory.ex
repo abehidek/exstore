@@ -11,6 +11,14 @@ defmodule ServerWeb.Schema.Inventory do
         {:ok, Inventory.list_products()}
       end)
     end
+
+    field :list_stocks, type: list_of(non_null(:stock)) do
+      middleware ServerWeb.Middleware.Authentication
+
+      resolve(fn _, _ ->
+        {:ok, Inventory.list_stocks()}
+      end)
+    end
   end
 
   object :product do
@@ -26,13 +34,18 @@ defmodule ServerWeb.Schema.Inventory do
     field(:photo, :string)
   end
 
-  # object :create_stock_payload do
-  #   field :id, non_null(:integer)
-  #   field :quantity, non_null(:integer)
-  #   field :unit_price_in_cents, non_null(:integer)
-  #   field :product_id, non_null(:integer)
-  #   field :product, non_null(:product)
-  # end
+  object :stock do
+    field(:id, non_null(:integer))
+    field(:product_id, non_null(:integer))
+    field(:quantity, non_null(:integer))
+    field(:unit_price_in_cents, non_null(:integer))
+  end
+
+  input_object :create_stock_input do
+    field(:product_id, non_null(:integer))
+    field(:quantity, non_null(:integer))
+    field(:unit_price_in_cents, non_null(:integer))
+  end
 
   object :inventory_mutation do
     field :create_product, type: non_null(:product) do
@@ -65,6 +78,40 @@ defmodule ServerWeb.Schema.Inventory do
 
           nil ->
             {:error, "Product not found"}
+        end
+      end)
+    end
+
+    field :create_stock, type: non_null(:stock) do
+      arg :stock, non_null(:create_stock_input)
+
+      middleware ServerWeb.Middleware.Authentication
+
+      resolve(fn %{stock: stock}, _ ->
+        case Inventory.create_stock(stock) do
+          {:ok, %Inventory.Stock{} = stock} -> {:ok, stock}
+          {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.error_payload(changeset)}
+          _ -> {:error, "Internal Server Error"}
+        end
+      end)
+    end
+
+    field :delete_stock, type: non_null(:stock) do
+      arg(:stock_id, non_null(:integer))
+
+      middleware ServerWeb.Middleware.Authentication
+
+      resolve(fn %{stock_id: stock_id}, _ ->
+        case Inventory.get_stock(stock_id) do
+          %Inventory.Stock{} = stock ->
+            case Inventory.delete_stock(stock) do
+              {:ok, %Inventory.Stock{} = deleted_stock} -> {:ok, deleted_stock}
+              {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.error_payload(changeset)}
+              _ -> {:error, "Internal Server Error"}
+            end
+
+          nil ->
+            {:error, "Stock item not found"}
         end
       end)
     end

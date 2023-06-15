@@ -41,5 +41,7 @@ defmodule Server.Repo.Migrations.DatabaseSchema do
       add :quantity, :integer, null: false
       add :unit_price_in_cents, :integer, null: false
     end
+
+    create unique_index(:stocks, [:product_id])
   end
 end

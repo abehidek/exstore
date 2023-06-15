@@ -26,9 +26,21 @@ defmodule Server.Inventory do
     Repo.delete(product)
   end
 
+  def list_stocks do
+    Repo.all(Stock)
+  end
+
+  def get_stock(id) do
+    Repo.get_by(Stock, id: id)
+  end
+
   def create_stock(attrs \\ %{}) do
     %Stock{}
     |> Stock.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def delete_stock(%Stock{} = stock) do
+    Repo.delete(stock)
   end
 end

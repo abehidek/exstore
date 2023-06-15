@@ -14,6 +14,7 @@ defmodule Server.Inventory.Stock do
     stock
     |> cast(attrs, [:quantity, :unit_price_in_cents, :product_id])
     |> validate_required([:quantity, :unit_price_in_cents, :product_id])
+    |> unique_constraint(:product_id)
     |> foreign_key_constraint(:product_id)
   end
 end
