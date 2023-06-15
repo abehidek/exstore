@@ -42,7 +42,7 @@ export const CreateProductScreen: React.FC<
       client.refetchQueries({
         include: ["listProducts"],
       });
-      props.navigation.goBack();
+      props.navigation.navigate("ProductsScreen");
     },
     onError: (err) =>
       Alert.alert(
