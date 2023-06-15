@@ -2,7 +2,7 @@
   <!-- <br> -->
   <!-- <img width="300" src="./apps/ets-s3/assets/logo.png" />
   <br> -->
-  Einer
+  Exstore
   <br>
 </h1>
 
