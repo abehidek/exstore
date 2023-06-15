@@ -3,10 +3,13 @@ import { client } from "./src/client";
 import { ApolloProvider } from "@apollo/client";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text } from "react-native";
+import { View, Text, Linking } from "react-native";
 import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
 import {
   createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
   DrawerScreenProps,
 } from "@react-navigation/drawer";
 
@@ -37,7 +40,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
 
 export const NavigationLayer = () => {
-  const { loading, error, user } = useAuth();
+  const { loading, error, user, signOut } = useAuth();
 
   if (loading)
     return (
@@ -51,7 +54,27 @@ export const NavigationLayer = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <Drawer.Navigator initialRouteName="HomeScreen">
+        <Drawer.Navigator
+          initialRouteName="HomeScreen"
+          drawerContent={(props) => (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              <DrawerItem
+                label="Sign out"
+                onPress={() => {
+                  props.navigation.closeDrawer();
+                  signOut();
+                }}
+              />
+              <DrawerItem
+                label="Source code"
+                onPress={() =>
+                  Linking.openURL("https://github.com/abehidek/exstore")
+                }
+              />
+            </DrawerContentScrollView>
+          )}
+        >
           <Drawer.Screen
             name="HomeScreen"
             component={HomeScreen}

@@ -5,21 +5,12 @@ import { useAuth } from "../auth/AuthContext";
 export const HomeScreen: React.FC<ScreenProps<"HomeScreen">> = ({
   navigation,
 }) => {
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
       <View>
         <Text>{JSON.stringify(user)}</Text>
-
-        <View>
-          <Button
-            onPress={() => {
-              signOut();
-            }}
-            title="Sign out!"
-          />
-        </View>
       </View>
     </SafeAreaView>
   );
