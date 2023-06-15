@@ -40,45 +40,60 @@ export const SignInScreen: React.FC<ScreenProps<"SignInScreen">> = (props) => {
   });
 
   return (
-    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
-      <View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Email"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
+    <SafeAreaView className="bg-grey-100 h-screen flex items-center p-5 w-full overflow-hidden">
+      <View className="w-full flex flex-col">
+        <View className="mt-2">
+          <Text>Email: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="john@email.com"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+          />
+
+          {errors.email && <Text>{errors.email.message}</Text>}
+        </View>
+
+        <View className="mt-2">
+          <Text>Password: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="*******"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
+          />
+
+          {errors.password && <Text>{errors.password.message}</Text>}
+        </View>
+
+        <View className="mt-4">
+          <Button title="Submit" onPress={onSubmit} />
+        </View>
+
+        <View className="mt-4">
+          <Text>Does not have an account?</Text>
+          <View className="mt-2">
+            <Button
+              title="Sign up"
+              onPress={() => props.navigation.navigate("SignUpScreen")}
             />
-          )}
-          name="email"
-        />
-
-        {errors.email && <Text>{errors.email.message}</Text>}
-
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="password"
-        />
-
-        {errors.password && <Text>{errors.password.message}</Text>}
-
-        <Button title="Submit" onPress={onSubmit} />
-
-        <Text>Does not have an account?</Text>
-        <Button
-          title="Sign up"
-          onPress={() => props.navigation.navigate("SignUpScreen")}
-        />
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );

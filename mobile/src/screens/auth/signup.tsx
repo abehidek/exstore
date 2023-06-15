@@ -45,12 +45,12 @@ export const SignUpScreen: React.FC<ScreenProps<"SignUpScreen">> = (props) => {
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "Eba guilherme",
-      address: "Rua 2",
-      cpf: "11122233345",
-      email: "eba@email.com",
-      password: "12345678",
-      confirmPassword: "12345678",
+      name: "",
+      address: "",
+      cpf: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -89,104 +89,130 @@ export const SignUpScreen: React.FC<ScreenProps<"SignUpScreen">> = (props) => {
   });
 
   return (
-    <SafeAreaView className="bg-grey-100 h-screen flex items-center justify-center">
-      <View>
+    <SafeAreaView className="bg-grey-100 h-screen flex items-center p-5 w-full overflow-hidden">
+      <View className="w-full flex flex-col">
         {/* NAME */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Name"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="name"
-        />
-        {errors.name && <Text>{errors.name.message}</Text>}
+        <View className="mt-2">
+          <Text>Name: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="John Doe"
+                onBlur={onBlur}
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="name"
+          />
+          {errors.name && <Text>{errors.name.message}</Text>}
+        </View>
 
         {/* ADDRESS */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Address"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="address"
-        />
-        {errors.address && <Text>{errors.address.message}</Text>}
+        <View className="mt-2">
+          <Text>Address: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="Street 2"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="address"
+          />
+          {errors.address && <Text>{errors.address.message}</Text>}
+        </View>
 
         {/* CPF */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <MaskedTextInput
-              mask="999.999.999-99"
-              onChangeText={(text, _) => onChange(text)}
-              placeholder="CPF"
-              onBlur={onBlur}
-              value={value}
-            />
-          )}
-          name="cpf"
-        />
-        {errors.cpf && <Text>{errors.cpf.message}</Text>}
+        <View className="mt-2">
+          <Text>CPF: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <MaskedTextInput
+                mask="999.999.999-99"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onChangeText={(text, _) => onChange(text)}
+                placeholder="321.456.987-00"
+                onBlur={onBlur}
+                value={value}
+              />
+            )}
+            name="cpf"
+          />
+          {errors.cpf && <Text>{errors.cpf.message}</Text>}
+        </View>
 
         {/* EMAIL */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Email"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="email"
-        />
-        {errors.email && <Text>{errors.email.message}</Text>}
+        <View className="mt-2">
+          <Text>Email: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="john@email.com"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+          />
+          {errors.email && <Text>{errors.email.message}</Text>}
+        </View>
 
         {/* PASSWORD */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry={true}
-            />
-          )}
-          name="password"
-        />
-        {errors.password && <Text>{errors.password.message}</Text>}
+        <View className="mt-2">
+          <Text>Password: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="******"
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
+          />
+          {errors.password && <Text>{errors.password.message}</Text>}
+        </View>
 
         {/* CONFIRM PASSWORD */}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Confirm password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry={true}
-            />
+        <View className="mt-2">
+          <Text>Confirm Password: </Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="*******"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                className="bg-gray-200 p-3 rounded-lg mt-1"
+                value={value}
+                secureTextEntry={true}
+              />
+            )}
+            name="confirmPassword"
+          />
+          {errors.confirmPassword && (
+            <Text>{errors.confirmPassword.message}</Text>
           )}
-          name="confirmPassword"
-        />
-        {errors.confirmPassword && (
-          <Text>{errors.confirmPassword.message}</Text>
-        )}
+        </View>
 
-        <Button title="Create account" onPress={onSubmit} />
+        <View className="mt-4">
+          <Button title="Create account" onPress={onSubmit} />
+        </View>
       </View>
     </SafeAreaView>
   );

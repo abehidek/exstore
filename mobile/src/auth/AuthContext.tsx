@@ -118,7 +118,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [signIn] = useMutation(SIGN_IN, {
     onCompleted: async (res) => {
       if (!res.signIn) return;
-      Alert.alert("Signed in succesfully!");
+      Alert.alert(
+        "Signed in succesfully!",
+        "Succesfully signed in your account"
+      );
       setToken(res.signIn.token).then(() => query.refetch());
     },
     onError: (err) => {
@@ -146,7 +149,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const [signOut] = useMutation(SIGN_OUT, {
     onCompleted: async (_) => {
-      Alert.alert("Signed out succesfully!");
+      Alert.alert(
+        "Signed out succesfully!",
+        "Succesfully signed out your account"
+      );
       delToken().then(() => query.refetch());
     },
     onError: (err) => {
