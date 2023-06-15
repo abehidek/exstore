@@ -16,7 +16,7 @@ defmodule ServerWeb.Schema.Inventory do
       middleware ServerWeb.Middleware.Authentication
 
       resolve(fn _, _ ->
-        {:ok, Inventory.list_stocks()}
+        {:ok, Inventory.list_stocks() |> Repo.preload(:product)}
       end)
     end
   end
@@ -39,6 +39,7 @@ defmodule ServerWeb.Schema.Inventory do
     field(:product_id, non_null(:integer))
     field(:quantity, non_null(:integer))
     field(:unit_price_in_cents, non_null(:integer))
+    field(:product, non_null(:product))
   end
 
   input_object :create_stock_input do
