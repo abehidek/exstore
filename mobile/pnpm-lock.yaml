@@ -44,6 +44,12 @@ dependencies:
   react-native:
     specifier: 0.71.3
     version: 0.71.3(@babel/core@7.19.3)(@babel/preset-env@7.21.5)(react@18.2.0)
+  react-native-currency-input:
+    specifier: ^1.1.0
+    version: 1.1.0(react-native@0.71.3)(react@18.2.0)
+  react-native-dropdown-select-list:
+    specifier: ^2.0.4
+    version: 2.0.4
   react-native-gesture-handler:
     specifier: ~2.9.0
     version: 2.9.0(react-native@0.71.3)(react@18.2.0)
@@ -9123,6 +9129,20 @@ packages:
     transitivePeerDependencies:
       - '@babel/preset-env'
       - supports-color
+    dev: false
+
+  /react-native-currency-input@1.1.0(react-native@0.71.3)(react@18.2.0):
+    resolution: {integrity: sha512-TNyqQ98pB6WdLJiEz5NIZWUT1zpzJNBUCGS+5PGO0QCmbssSA/n4zVC7+msX5Z0Wl+iwhpTPsCckDJeRIlxwKg==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+    dependencies:
+      react: 18.2.0
+      react-native: 0.71.3(@babel/core@7.19.3)(@babel/preset-env@7.21.5)(react@18.2.0)
+    dev: false
+
+  /react-native-dropdown-select-list@2.0.4:
+    resolution: {integrity: sha512-H7aRhhSHYvl5v+Ufy5CtXhaRHgrRQakWn+IexSFCP/+nUFu5yvwfmtbVEfIszMjr6szPuiabG15trrbswHlmCw==}
     dev: false
 
   /react-native-gesture-handler@2.9.0(react-native@0.71.3)(react@18.2.0):

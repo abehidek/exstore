@@ -20,6 +20,9 @@ const documents = {
     "\n    mutation createProduct($product: CreateProductInput!) {\n      createProduct(product:$product) {\n        id\n        insertedAt\n        name\n        photo\n        updatedAt\n      }\n    }\n  ": types.CreateProductDocument,
     "\n    mutation deleteProduct($productId:Int!){\n      deleteProduct(productId:$productId){\n        id\n        name\n        insertedAt\n        photo\n      }\n    }\n  ": types.DeleteProductDocument,
     "\n    query listProducts {\n      listProducts {\n        id\n        name\n        photo\n        insertedAt\n        updatedAt\n      }\n    }\n  ": types.ListProductsDocument,
+    "\n    mutation createStock($stock:CreateStockInput!) {\n      createStock(stock:$stock) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  ": types.CreateStockDocument,
+    "\n    mutation deleteStock($stockId:Int!) {\n      deleteStock(stockId:$stockId) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  ": types.DeleteStockDocument,
+    "\n    query listStocks {\n      listStocks {\n        id productId quantity unitPriceInCents product {\n          id name photo insertedAt updatedAt\n        }\n      }\n    }\n  ": types.ListStocksDocument,
 };
 
 /**
@@ -64,6 +67,18 @@ export function gql(source: "\n    mutation deleteProduct($productId:Int!){\n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n    query listProducts {\n      listProducts {\n        id\n        name\n        photo\n        insertedAt\n        updatedAt\n      }\n    }\n  "): (typeof documents)["\n    query listProducts {\n      listProducts {\n        id\n        name\n        photo\n        insertedAt\n        updatedAt\n      }\n    }\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation createStock($stock:CreateStockInput!) {\n      createStock(stock:$stock) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  "): (typeof documents)["\n    mutation createStock($stock:CreateStockInput!) {\n      createStock(stock:$stock) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation deleteStock($stockId:Int!) {\n      deleteStock(stockId:$stockId) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  "): (typeof documents)["\n    mutation deleteStock($stockId:Int!) {\n      deleteStock(stockId:$stockId) {\n        id productId quantity unitPriceInCents\n      }\n    }\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    query listStocks {\n      listStocks {\n        id productId quantity unitPriceInCents product {\n          id name photo insertedAt updatedAt\n        }\n      }\n    }\n  "): (typeof documents)["\n    query listStocks {\n      listStocks {\n        id productId quantity unitPriceInCents product {\n          id name photo insertedAt updatedAt\n        }\n      }\n    }\n  "];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

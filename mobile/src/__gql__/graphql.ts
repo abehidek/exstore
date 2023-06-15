@@ -25,6 +25,12 @@ export type CreateProductInput = {
   photo?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateStockInput = {
+  productId: Scalars['Int'];
+  quantity: Scalars['Int'];
+  unitPriceInCents: Scalars['Int'];
+};
+
 export type MePayload = {
   __typename?: 'MePayload';
   id: Scalars['String'];
@@ -46,8 +52,10 @@ export type Product = {
 export type RootMutationType = {
   __typename?: 'RootMutationType';
   createProduct: Product;
+  createStock: Stock;
   createUser?: Maybe<User>;
   deleteProduct: Product;
+  deleteStock: Stock;
   signIn?: Maybe<SignInPayload>;
   signOut: MePayload;
 };
@@ -55,6 +63,11 @@ export type RootMutationType = {
 
 export type RootMutationTypeCreateProductArgs = {
   product: CreateProductInput;
+};
+
+
+export type RootMutationTypeCreateStockArgs = {
+  stock: CreateStockInput;
 };
 
 
@@ -68,6 +81,11 @@ export type RootMutationTypeDeleteProductArgs = {
 };
 
 
+export type RootMutationTypeDeleteStockArgs = {
+  stockId: Scalars['Int'];
+};
+
+
 export type RootMutationTypeSignInArgs = {
   credentials: SignInInput;
 };
@@ -75,6 +93,7 @@ export type RootMutationTypeSignInArgs = {
 export type RootQueryType = {
   __typename?: 'RootQueryType';
   listProducts?: Maybe<Array<Product>>;
+  listStocks?: Maybe<Array<Stock>>;
   me?: Maybe<MePayload>;
 };
 
@@ -88,6 +107,15 @@ export type SignInPayload = {
   token: Scalars['String'];
   user: User;
   userId: Scalars['String'];
+};
+
+export type Stock = {
+  __typename?: 'Stock';
+  id: Scalars['Int'];
+  product: Product;
+  productId: Scalars['Int'];
+  quantity: Scalars['Int'];
+  unitPriceInCents: Scalars['Int'];
 };
 
 /** Basic unit of authentication */
@@ -153,6 +181,25 @@ export type ListProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ListProductsQuery = { __typename?: 'RootQueryType', listProducts?: Array<{ __typename?: 'Product', id: number, name: string, photo?: string | null, insertedAt: any, updatedAt: any }> | null };
 
+export type CreateStockMutationVariables = Exact<{
+  stock: CreateStockInput;
+}>;
+
+
+export type CreateStockMutation = { __typename?: 'RootMutationType', createStock: { __typename?: 'Stock', id: number, productId: number, quantity: number, unitPriceInCents: number } };
+
+export type DeleteStockMutationVariables = Exact<{
+  stockId: Scalars['Int'];
+}>;
+
+
+export type DeleteStockMutation = { __typename?: 'RootMutationType', deleteStock: { __typename?: 'Stock', id: number, productId: number, quantity: number, unitPriceInCents: number } };
+
+export type ListStocksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListStocksQuery = { __typename?: 'RootQueryType', listStocks?: Array<{ __typename?: 'Stock', id: number, productId: number, quantity: number, unitPriceInCents: number, product: { __typename?: 'Product', id: number, name: string, photo?: string | null, insertedAt: any, updatedAt: any } }> | null };
+
 
 export const GetMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"cpf"}},{"kind":"Field","name":{"kind":"Name","value":"insertedAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]}}]} as unknown as DocumentNode<GetMeQuery, GetMeQueryVariables>;
 export const SignInDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"signIn"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"credentials"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignInInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signIn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"credentials"},"value":{"kind":"Variable","name":{"kind":"Name","value":"credentials"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"cpf"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}}]}}]}}]} as unknown as DocumentNode<SignInMutation, SignInMutationVariables>;
@@ -161,3 +208,6 @@ export const CreateUserDocument = {"kind":"Document","definitions":[{"kind":"Ope
 export const CreateProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"product"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProductInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"product"},"value":{"kind":"Variable","name":{"kind":"Name","value":"product"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"insertedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<CreateProductMutation, CreateProductMutationVariables>;
 export const DeleteProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"productId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"productId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"productId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"insertedAt"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]}}]} as unknown as DocumentNode<DeleteProductMutation, DeleteProductMutationVariables>;
 export const ListProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}},{"kind":"Field","name":{"kind":"Name","value":"insertedAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<ListProductsQuery, ListProductsQueryVariables>;
+export const CreateStockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createStock"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"stock"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateStockInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createStock"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"stock"},"value":{"kind":"Variable","name":{"kind":"Name","value":"stock"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"unitPriceInCents"}}]}}]}}]} as unknown as DocumentNode<CreateStockMutation, CreateStockMutationVariables>;
+export const DeleteStockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteStock"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"stockId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteStock"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"stockId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"stockId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"unitPriceInCents"}}]}}]}}]} as unknown as DocumentNode<DeleteStockMutation, DeleteStockMutationVariables>;
+export const ListStocksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listStocks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listStocks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"unitPriceInCents"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}},{"kind":"Field","name":{"kind":"Name","value":"insertedAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]}}]} as unknown as DocumentNode<ListStocksQuery, ListStocksQueryVariables>;
