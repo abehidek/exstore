@@ -1,10 +1,14 @@
+import "react-native-gesture-handler";
 import { client } from "./src/client";
 import { ApolloProvider } from "@apollo/client";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import { AuthContextProvider, useAuth } from "./src/auth/AuthContext";
+import {
+  createDrawerNavigator,
+  DrawerScreenProps,
+} from "@react-navigation/drawer";
 
 import { SignInScreen } from "./src/screens/auth/signin";
 import { SignUpScreen } from "./src/screens/auth/signup";
@@ -24,10 +28,13 @@ export type RootStackParamList = {
   CreateStockItemScreen: undefined;
 };
 
-export type ScreenProps<T extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, T>;
+export type ScreenProps<T extends keyof RootStackParamList> = DrawerScreenProps<
+  RootStackParamList,
+  T
+>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const Drawer = createDrawerNavigator<RootStackParamList>();
 
 export const NavigationLayer = () => {
   const { loading, error, user } = useAuth();
@@ -44,32 +51,35 @@ export const NavigationLayer = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <Stack.Navigator>
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen
+        <Drawer.Navigator initialRouteName="HomeScreen">
+          <Drawer.Screen
+            name="HomeScreen"
+            component={HomeScreen}
+            options={{ title: "Home" }}
+          />
+          <Drawer.Screen
             name="ProductsScreen"
             component={ProductsScreen}
             options={{ title: "Products" }}
           />
-          <Stack.Screen
+          <Drawer.Screen
             name="CreateProductScreen"
             component={CreateProductScreen}
             options={{ title: "Create Product" }}
           />
-          <Stack.Screen
+          <Drawer.Screen
             name="StockItemsScreen"
             component={StockItemsScreen}
             options={{ title: "Stock" }}
           />
-          <Stack.Screen
+          <Drawer.Screen
             name="CreateStockItemScreen"
             component={CreateStockItemScreen}
             options={{ title: "Create Stock Item" }}
           />
-        </Stack.Navigator>
+        </Drawer.Navigator>
       ) : (
         <Stack.Navigator>
-          {/* <SignInScreen /> */}
           <Stack.Screen
             name="SignInScreen"
             component={SignInScreen}
