@@ -20,11 +20,6 @@ export const HomeScreen: React.FC<ScreenProps<"HomeScreen">> = ({
             title="Sign out!"
           />
         </View>
-
-        <Button
-          onPress={() => navigation.navigate("ProductsScreen")}
-          title="Products"
-        />
       </View>
     </SafeAreaView>
   );
