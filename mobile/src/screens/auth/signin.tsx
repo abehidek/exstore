@@ -24,8 +24,8 @@ export const SignInScreen: React.FC<ScreenProps<"SignInScreen">> = (props) => {
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "eba@email.com",
-      password: "12345678",
+      email: "",
+      password: "",
     },
   });
 

@@ -58,6 +58,7 @@ export const NavigationLayer = () => {
           initialRouteName="StockItemsScreen"
           drawerContent={(props) => (
             <DrawerContentScrollView {...props}>
+              <Text className="text-xl font-bold mt-10 w-full text-center">Exstore Inventory Manager</Text>
               <DrawerItemList {...props} />
               <DrawerItem
                 label="Sign out"
